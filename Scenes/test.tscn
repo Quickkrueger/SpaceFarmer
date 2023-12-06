@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://dse0ohf8w6g36"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerShip.cs" id="1_57kl7"]
+[ext_resource type="ArrayMesh" uid="uid://csum15tf5i7cy" path="res://Models/PlayerShip.obj" id="1_jd3eq"]
+[ext_resource type="Script" path="res://Scripts/ShipInput.cs" id="3_ocx17"]
+[ext_resource type="Script" path="res://Scripts/ShipMovement.cs" id="4_tn6di"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7yomj"]
+
+[node name="Test" type="Node3D"]
+
+[node name="PlayerShip" type="CharacterBody3D" parent="."]
+motion_mode = 1
+script = ExtResource("1_57kl7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerShip"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+mesh = ExtResource("1_jd3eq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerShip"]
+shape = SubResource("ConvexPolygonShape3D_7yomj")
+
+[node name="ShipInput" type="Node" parent="PlayerShip"]
+script = ExtResource("3_ocx17")
+
+[node name="ShipMovement" type="Node" parent="PlayerShip"]
+script = ExtResource("4_tn6di")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.99402)
+
+[connection signal="Boost" from="PlayerShip/ShipInput" to="PlayerShip" method="OnBoost"]
+[connection signal="Brake" from="PlayerShip/ShipInput" to="PlayerShip" method="OnBrake"]
+[connection signal="ChangePitch" from="PlayerShip/ShipInput" to="PlayerShip" method="OnChangePitch"]
+[connection signal="ChangeRoll" from="PlayerShip/ShipInput" to="PlayerShip" method="OnChangeRoll"]
+[connection signal="ChangeYaw" from="PlayerShip/ShipInput" to="PlayerShip" method="OnChangeYaw"]
+[connection signal="PrimaryAttack" from="PlayerShip/ShipInput" to="PlayerShip" method="OnPrimary"]
+[connection signal="SecondaryAttack" from="PlayerShip/ShipInput" to="PlayerShip" method="OnSecondary"]
