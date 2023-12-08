@@ -23,38 +23,41 @@ public partial class ShipInput : Node
 	{
 		base._UnhandledInput(@event);
 
-		if(@event.IsAction("Pitch Up"))
-		{
-			EmitSignal(SignalName.ChangePitch, @event.GetActionStrength("Pitch Up"));
-		}
-        if (@event.IsAction("Pitch Down"))
+        float pitchValue = 0;
+
+        pitchValue += @event.GetActionStrength("Pitch Up");
+        pitchValue += @event.GetActionStrength("Pitch Down") * -1f;
+
+        if (pitchValue != 0 || @event.IsAction("Pitch Up") || @event.IsAction("Pitch Down"))
         {
-            EmitSignal(SignalName.ChangePitch, @event.GetActionStrength("Pitch Down") * -1f);
+            EmitSignal(SignalName.ChangePitch, pitchValue);
         }
 
-        if (@event.IsAction("Yaw Left"))
+        float yawValue = 0;
+
+        yawValue += @event.GetActionStrength("Yaw Left");
+        yawValue += @event.GetActionStrength("Yaw Right") * -1f;
+
+        if (yawValue != 0 || @event.IsAction("Yaw Right") || @event.IsAction("Yaw Left"))
         {
-            EmitSignal(SignalName.ChangeYaw, @event.GetActionStrength("Yaw Left"));
-        }
-        if (@event.IsAction("Yaw Right"))
-        {
-            EmitSignal(SignalName.ChangeYaw, @event.GetActionStrength("Yaw Right") * -1f);
+            EmitSignal(SignalName.ChangeYaw, yawValue);
         }
 
-        if (@event.IsAction("Roll Left"))
+        float rollValue = 0;
+
+        rollValue += @event.GetActionStrength("Roll Left");
+        rollValue += @event.GetActionStrength("Roll Right") * -1f;
+
+        if (rollValue != 0 || @event.IsAction("Roll Right") || @event.IsAction("Roll Left"))
         {
-            EmitSignal(SignalName.ChangeRoll, @event.GetActionStrength("Roll Left"));
-        }
-        if (@event.IsAction("Roll Right"))
-        {
-            EmitSignal(SignalName.ChangeRoll, @event.GetActionStrength("Roll Right") * -1f);
+            EmitSignal(SignalName.ChangeRoll, rollValue);
         }
 
-        if (@event.IsActionPressed("Primary Fire"))
+        if (@event.IsAction("Primary Fire"))
         {
             EmitSignal(SignalName.PrimaryAttack);
         }
-        if (@event.IsActionPressed("Secondary Fire"))
+        if (@event.IsAction("Secondary Fire"))
         {
             EmitSignal(SignalName.SecondaryAttack);
         }

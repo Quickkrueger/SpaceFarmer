@@ -9,9 +9,10 @@
 
 [node name="Test" type="Node3D"]
 
-[node name="PlayerShip" type="CharacterBody3D" parent="."]
+[node name="PlayerShip" type="CharacterBody3D" parent="." node_paths=PackedStringArray("shipMovement")]
 motion_mode = 1
 script = ExtResource("1_57kl7")
+shipMovement = NodePath("ShipMovement")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerShip"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
@@ -25,9 +26,13 @@ script = ExtResource("3_ocx17")
 
 [node name="ShipMovement" type="Node" parent="PlayerShip"]
 script = ExtResource("4_tn6di")
+rotationalSpeeds = Vector3(1, 1, 1)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.99402)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.896394, 0.443259, 0, -0.443259, 0.896394, 0, 7.01765, 8.40567)
 
 [connection signal="Boost" from="PlayerShip/ShipInput" to="PlayerShip" method="OnBoost"]
 [connection signal="Brake" from="PlayerShip/ShipInput" to="PlayerShip" method="OnBrake"]

@@ -3,20 +3,22 @@ using System;
 
 public partial class PlayerShip : CharacterBody3D
 {
+	[Export]
+	public ShipMovement shipMovement;
 	
 	private void OnChangePitch(float value)
 	{
-		GD.Print("Pitch");
+		shipMovement?.UpdatePitch(value);
 	}
 
 	private void OnChangeRoll(float value)
 	{
-		GD.Print("Roll");
+		shipMovement?.UpdateRoll(value);
 	}
 
 	private void OnChangeYaw(float value)
 	{
-		GD.Print("Yaw");
+		shipMovement?.UpdateYaw(value);
 	}
 
 	private void OnPrimary()
