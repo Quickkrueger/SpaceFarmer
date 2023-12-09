@@ -64,6 +64,7 @@ public partial class ShipMovement : Node
 		if (!runningRotation || rotationalInputs == Vector3.Zero)
 		{
             runningRotation = false;
+			return;
         }
 		else if(rotationalInputs != Vector3.Zero && runningRotation)
 		{
