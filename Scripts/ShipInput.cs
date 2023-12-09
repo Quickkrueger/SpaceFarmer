@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Runtime.CompilerServices;
 
 
 public partial class ShipInput : Node
@@ -19,39 +20,15 @@ public partial class ShipInput : Node
 	[Signal]
 	public delegate void BrakeEventHandler();
 
+    private ShipRotationInputs shipRotationInputs = new ShipRotationInputs();
+
 	public override void _UnhandledInput(InputEvent @event)
 	{
 		base._UnhandledInput(@event);
 
-        float pitchValue = 0;
-
-        pitchValue += @event.GetActionStrength("Pitch Up");
-        pitchValue += @event.GetActionStrength("Pitch Down") * -1f;
-
-        if (pitchValue != 0 || @event.IsAction("Pitch Up") || @event.IsAction("Pitch Down"))
-        {
-            EmitSignal(SignalName.ChangePitch, pitchValue);
-        }
-
-        float yawValue = 0;
-
-        yawValue += @event.GetActionStrength("Yaw Left");
-        yawValue += @event.GetActionStrength("Yaw Right") * -1f;
-
-        if (yawValue != 0 || @event.IsAction("Yaw Right") || @event.IsAction("Yaw Left"))
-        {
-            EmitSignal(SignalName.ChangeYaw, yawValue);
-        }
-
-        float rollValue = 0;
-
-        rollValue += @event.GetActionStrength("Roll Left");
-        rollValue += @event.GetActionStrength("Roll Right") * -1f;
-
-        if (rollValue != 0 || @event.IsAction("Roll Right") || @event.IsAction("Roll Left"))
-        {
-            EmitSignal(SignalName.ChangeRoll, rollValue);
-        }
+        shipRotationInputs.pitch = HandleAxisInput(@event, "Pitch", shipRotationInputs.pitch);
+        shipRotationInputs.yaw = HandleAxisInput(@event, "Yaw", shipRotationInputs.yaw);
+        shipRotationInputs.roll = HandleAxisInput(@event, "Roll", shipRotationInputs.roll);
 
         if (@event.IsAction("Primary Fire"))
         {
@@ -70,5 +47,55 @@ public partial class ShipInput : Node
         {
             EmitSignal(SignalName.Brake);
         }
+    }
+
+    private Vector2 HandleAxisInput(InputEvent @event, string axisName, Vector2 inputData)
+    {
+        Vector2 resultData = inputData;
+
+        if (@event.IsActionPressed($"{axisName} +"))
+        {
+            resultData.X = @event.GetActionStrength($"{axisName} +");
+        }
+        else if (@event.IsActionReleased($"{axisName} +"))
+        {
+            resultData.X = 0;
+        }
+
+        if (@event.IsActionPressed($"{axisName} -"))
+        {
+            resultData.Y = @event.GetActionStrength($"{axisName} -") * -1;
+        }
+        else if (@event.IsActionReleased($"{axisName} -"))
+        {
+            resultData.Y = 0;
+        }
+
+        if ((@event.IsActionPressed($"{axisName} +") || @event.IsActionPressed($"{axisName} -")) 
+            || @event.IsActionReleased($"{axisName} +") || @event.IsActionReleased($"{axisName} -"))
+        {
+
+            EmitSignal($"Change{axisName}", resultData.X + resultData.Y);
+            GD.Print($"{axisName}: {resultData.X + resultData.Y}");
+
+        }
+
+        return resultData;
+    }
+}
+
+  
+
+public struct ShipRotationInputs
+{
+    public Vector2 pitch;
+    public Vector2 yaw;
+    public Vector2 roll;
+
+    public ShipRotationInputs()
+    {
+        pitch = Vector2.Zero;
+        yaw = Vector2.Zero;
+        roll = Vector2.Zero;
     }
 }
