@@ -1,21 +1,44 @@
-[gd_scene load_steps=3 format=3 uid="uid://bx7aqt1t0yua5"]
+[gd_scene load_steps=7 format=3 uid="uid://bx7aqt1t0yua5"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerGround.cs" id="1_wi1ei"]
+[ext_resource type="Script" path="res://Scripts/PlayerInput.cs" id="2_uymkb"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w574i"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qf086"]
 
+[sub_resource type="QuadMesh" id="QuadMesh_qacq2"]
+size = Vector2(100, 100)
+orientation = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_scn5v"]
+size = Vector3(100, 1, 100)
+
 [node name="Ground-Test" type="Node3D"]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="PlayerGround" type="CharacterBody3D" parent="."]
+script = ExtResource("1_wi1ei")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="PlayerCollider" type="CollisionShape3D" parent="PlayerGround"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_w574i")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="Playermesh" type="MeshInstance3D" parent="PlayerGround"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_qf086")
-skeleton = NodePath("../CollisionShape3D")
+skeleton = NodePath("../PlayerCollider")
 
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+[node name="Camera3D" type="Camera3D" parent="PlayerGround"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50989, 0)
+
+[node name="PlayerInput" type="Node" parent="PlayerGround"]
+script = ExtResource("2_uymkb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("QuadMesh_qacq2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_scn5v")

@@ -14,11 +14,11 @@ motion_mode = 1
 script = ExtResource("1_57kl7")
 shipMovement = NodePath("ShipMovement")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerShip"]
+[node name="ShipMesh" type="MeshInstance3D" parent="PlayerShip"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 mesh = ExtResource("1_jd3eq")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerShip"]
+[node name="ShipCollider" type="CollisionShape3D" parent="PlayerShip"]
 shape = SubResource("ConvexPolygonShape3D_7yomj")
 
 [node name="ShipInput" type="Node" parent="PlayerShip"]
