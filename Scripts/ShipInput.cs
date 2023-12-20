@@ -76,7 +76,6 @@ public partial class ShipInput : Node
         {
 
             EmitSignal($"Change{axisName}", resultData.X + resultData.Y);
-            GD.Print($"{axisName}: {resultData.X + resultData.Y}");
 
         }
 
